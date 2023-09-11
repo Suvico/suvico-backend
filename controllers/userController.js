@@ -112,7 +112,7 @@ const getBankList = async (req, res) => {
   try {
     const apiKey = process.env.NU_PAY_API_KEY || 'default-api-key';
 
-    const response = await axios.get('https://nupaybiz.com/uat/api/EMandate/getBankList', {
+    const response = await axios.get('https://nupaybiz.com/uat/api/EMandate/getBankList?bank_type=Esign', {
       headers: {
         'Content-Type': 'application/json',
         'api-key': apiKey,
