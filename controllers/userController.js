@@ -7,7 +7,7 @@ const generateToken = async () => {
   try {
     const apiKey = process.env.NU_PAY_API_KEY || 'default-api-key';
 
-    const response = await axios.get('https://nupaybiz.com/uat/Auth/token', {
+    const response = await axios.get('https://nupaybiz.com/autonach/Auth/token', {
       headers: {
         'Content-Type': 'application/json',
         'api-key': apiKey,
@@ -31,7 +31,7 @@ const generateToken = async () => {
 const sendUserDataToAPI = async (data, apiKey, token) => {
   try {
     const response = await axios.post(
-      'https://nupaybiz.com/uat/api/EMandate/eManadate',
+      'https://nupaybiz.com/autonach/api/EMandate/eManadate',
       JSON.stringify(data),
       {
         headers: {
@@ -87,32 +87,49 @@ const createSuvico = async (req, res) => {
     const apiKey = process.env.NU_PAY_API_KEY;
     const data = req.body;
 
-    const loanNumber = await generateLoanNumber(); // Await the loan number promise
-    data.loan_no = loanNumber;
+    let loanNumber = await generateLoanNumber();
+    
+    // Handle potential duplicate key error
+    while (true) {
+      try {
+        data.loan_no = loanNumber;
 
-    const newUser = new User(data);
-    const result = await newUser.save();
-    console.log('User data saved:', result);
+        const newUser = new User(data);
+        const result = await newUser.save();
+        console.log('User data saved:', result);
 
-    if (!token || typeof token === 'undefined') {
-      token = await generateToken();
+        if (!token || typeof token === 'undefined') {
+          token = await generateToken();
+        }
+
+        const apiResponse = await sendUserDataToAPI(data, apiKey, token);
+        console.log('API Bank response:', apiResponse);
+
+        res.send({ response: data, status: 'passed', bankResponse: apiResponse });
+        break; 
+      } catch (error) {
+        if (error.code === 11000) {
+          // Duplicate key error, generate a new loan number and retry
+          loanNumber = await generateLoanNumber();
+        } else {
+          console.error('Error:', error);
+          res.status(500).send({ error: 'Internal Server Error' });
+          break; // Exit the loop if there's another non-duplicate-key error
+        }
+      }
     }
-
-    const apiResponse = await sendUserDataToAPI(data, apiKey, token);
-    console.log('API Bank response:', apiResponse);
-
-    res.send({ response: data, status: 'passed', bankResponse: apiResponse }); // Include bankResponse in the API response
   } catch (error) {
     console.error('Error:', error);
     res.status(500).send({ error: 'Internal Server Error' });
   }
 };
 
+
 const getBankList = async (req, res) => {
   try {
     const apiKey = process.env.NU_PAY_API_KEY || 'default-api-key';
 
-    const response = await axios.get('https://nupaybiz.com/uat/api/EMandate/getBankList?bank_type=Esign', {
+    const response = await axios.get('https://nupaybiz.com/autonach/api/EMandate/getBankList?bank_type=Esign', {
       headers: {
         'Content-Type': 'application/json',
         'api-key': apiKey,
@@ -131,7 +148,7 @@ const getCategoryList = async (req, res) => {
   try {
     const apiKey = process.env.NU_PAY_API_KEY || 'default-api-key';
 
-    const response = await axios.get('https://nupaybiz.com/uat/api/EMandate/getCategoryList', {
+    const response = await axios.get('https://nupaybiz.com/autonach/api/EMandate/getCategoryList', {
       headers: {
         'Content-Type': 'application/json',
         'api-key': apiKey,
@@ -148,5 +165,5 @@ const getCategoryList = async (req, res) => {
 module.exports = {
   createSuvico,
   getBankList,
-  getCategoryList, // Add the new function for fetching the category list
+  getCategoryList, 
 };
