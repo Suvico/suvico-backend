@@ -15,7 +15,7 @@ dotenv.config({ path: './config.env' });
 require('./db/conn');
 
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://suvicosolutions.com']
+  origin: ['http://localhost:3000', 'http://suvicosolutions.com','http://suvicosolutions.com','www.suvicosolutions.com']
 }));
 
 app.use(express.json());
