@@ -162,8 +162,34 @@ const getCategoryList = async (req, res) => {
   }
 };
 
+  const checkMandateStatus = async (req, res, token) => {
+    try {
+      const apiKey = process.env.NU_PAY_API_KEY || 'default-api-key';
+      const token = await getToken(); 
+  
+      const { refNo, umn } = req.body;
+  
+      const response = await axios.post(
+        'https://nupaybiz.com/uat/api/EMandate/getStatus/',
+        { refNo, umn },
+        {
+          headers: {
+            'api-key': apiKey,
+            'Token': token,
+          },
+        }
+      );
+  
+      res.status(200).json(response.data);
+    } catch (error) {
+      console.error('Error checking mandate status:', error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  };
+
 module.exports = {
   createSuvico,
   getBankList,
   getCategoryList, 
+  checkMandateStatus
 };
