@@ -184,25 +184,18 @@ exports.mandateCallback = async (req, res) => {
         margin-top: 10px;
       }
       button {
-        padding: 12px 24px;           /* Larger padding for small screens */
-        font-size: 16px;              /* Bigger text */
-        width: 100%;                  /* Full width on small screens */
-        max-width: 300px;             /* Limit width on larger screens */
+        padding: 12px 24px;      /* larger padding */
+        font-size: 16px;         /* bigger text */
+        min-width: 200px;        /* minimum width */
+        max-width: 300px;        /* maximum width */
         background-color: #007bff;
         color: white;
         border: none;
         border-radius: 5px;
         cursor: pointer;
-        display: block;
-        margin-top: 20px;
       }
       button:hover {
         background-color: #0056b3;
-      }
-      @media (min-width: 500px) {
-        button {
-          width: auto; /* Auto width on larger screens */
-        }
       }
     </style>
   </head>
@@ -225,12 +218,8 @@ exports.mandateCallback = async (req, res) => {
         ? `
         <h4>Errors:</h4>
         <ul>
-          ${mandateResponse.Errors.map(
-            err => `<li>${err.Error_Code} - ${err.Error_Message}</li>`
-          ).join('')}
-        </ul>
-        `
-        : ''
+          ${mandateResponse.Errors.map(err => `<li>${err.Error_Code} - ${err.Error_Message}</li>`).join('')}
+        </ul>` : ''
     }
 
     <p>Kindly keep a screenshot and save MsgId for future reference.</p>
@@ -240,6 +229,7 @@ exports.mandateCallback = async (req, res) => {
     </button>
   </body>
 </html>
+
 
 `);
 
