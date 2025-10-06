@@ -166,29 +166,68 @@ exports.mandateCallback = async (req, res) => {
 
 
   res.send(`
-  <html>
-    <head>
-      <title>Mandate Status</title>
-      <style>
-        body { font-family: Arial, sans-serif; padding: 20px; }
-        .success { color: green; }
-        .failed { color: red; }
-        ul { margin-top: 10px; }
-      </style>
-    </head>
-    <body>
-      <h2>Mandate Status</h2>
-      <p>Status: <strong class="${mandateResponse.Status === 'Success' ? 'success' : 'failed'}">${mandateResponse.Status}</strong></p>
-      <p>MsgId: ${mandateResponse.MsgId}</p>
-      <p>RefId: ${mandateResponse.RefId}</p>
-      ${mandateResponse.Errors && mandateResponse.Errors.length > 0 ? `
+ <html>
+  <head>
+    <title>Mandate Status</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      .success {
+        color: green;
+      }
+      .failed {
+        color: red;
+      }
+      ul {
+        margin-top: 10px;
+      }
+      button {
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>Mandate Status</h2>
+
+    <p>
+      Status:
+      <strong class="${mandateResponse.Status === 'Success' ? 'success' : 'failed'}">
+        ${mandateResponse.Status}
+      </strong>
+    </p>
+    <p>MsgId: ${mandateResponse.MsgId}</p>
+    <p>RefId: ${mandateResponse.RefId}</p>
+
+    ${
+      mandateResponse.Status !== 'Success' &&
+      mandateResponse.Errors &&
+      mandateResponse.Errors.length > 0
+        ? `
         <h4>Errors:</h4>
         <ul>
-          ${mandateResponse.Errors.map(err => `<li>${err.Error_Code} - ${err.Error_Message}</li>`).join('')}
-        </ul>` : ''}
-        <p>Kindly Keep a screenshot and save MsgId for future reference.</p>
-    </body>
-  </html>
+          ${mandateResponse.Errors.map(
+            err => `<li>${err.Error_Code} - ${err.Error_Message}</li>`
+          ).join('')}
+        </ul>
+        `
+        : ''
+    }
+
+    <p>Kindly keep a screenshot and save MsgId for future reference.</p>
+
+    <button onclick="window.location.href='/'">Go to Home</button>
+  </body>
+</html>
 `);
 
 

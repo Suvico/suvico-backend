@@ -8,7 +8,7 @@ router.get("/", async (req, res) => {
   try {
     const response = await axios.get(
       "https://enachuat.npci.org.in:8086/apiservices_new/getLiveBankDtls",
-      { httpsAgent: new https.Agent({ rejectUnauthorized: false }) } // ignore SSL for UAT
+      { httpsAgent: new https.Agent({ rejectUnauthorized: false }) } 
     );
 
     // Send back liveBankList only
