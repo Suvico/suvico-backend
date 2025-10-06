@@ -184,15 +184,25 @@ exports.mandateCallback = async (req, res) => {
         margin-top: 10px;
       }
       button {
-        padding: 10px 20px;
+        padding: 12px 24px;           /* Larger padding for small screens */
+        font-size: 16px;              /* Bigger text */
+        width: 100%;                  /* Full width on small screens */
+        max-width: 300px;             /* Limit width on larger screens */
         background-color: #007bff;
         color: white;
         border: none;
         border-radius: 5px;
         cursor: pointer;
+        display: block;
+        margin-top: 20px;
       }
       button:hover {
         background-color: #0056b3;
+      }
+      @media (min-width: 500px) {
+        button {
+          width: auto; /* Auto width on larger screens */
+        }
       }
     </style>
   </head>
@@ -225,9 +235,12 @@ exports.mandateCallback = async (req, res) => {
 
     <p>Kindly keep a screenshot and save MsgId for future reference.</p>
 
-    <button onclick="window.location.href='/'">Go to Home</button>
+    <button onclick="window.location.href='https://suvicosolutions.com/'">
+      Go to Home
+    </button>
   </body>
 </html>
+
 `);
 
 
