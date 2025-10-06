@@ -186,8 +186,8 @@ exports.mandateCallback = async (req, res) => {
       button {
         padding: 12px 24px;      /* larger padding */
         font-size: 16px;         /* bigger text */
-        min-width: 200px;        /* minimum width */
-        max-width: 300px;        /* maximum width */
+        min-width: 300px;        /* minimum width */
+        max-width: 350px;        /* maximum width */
         background-color: #007bff;
         color: white;
         border: none;
