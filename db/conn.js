@@ -9,5 +9,3 @@ mongoose.connect(DATABASE, {
     .catch((err) => console.log(err))
 
     // DATABASE=mongodb+srv://suvicosolution:Suvico%40321@cluster0.nv80jon.mongodb.net/?retryWrites=true&w=majority
-
-    // DATABASE=mongodb+srv://sushantkumarsuman007:Mongodb%4052@cluster0.izbvomz.mongodb.net/Suvico?retryWrites=true&w=majority

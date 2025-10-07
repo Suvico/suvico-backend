@@ -80,7 +80,7 @@ const MandateSchema = new mongoose.Schema(
     Customer_Reference2: { type: String, default: "" },
 
     CheckSum: { type: String, required: true }, // CheckSum
-
+  originalData: { type: Object },
     // --- Response fields from Bank/NPCI ---
     HDFC_Response: { type: Object },// store MandateRespDoc
  
