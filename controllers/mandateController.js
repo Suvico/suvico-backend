@@ -9,7 +9,7 @@ exports.initiateMandate = async (req, res) => {
     const msgId = "SUV" + Date.now();
     console.log("Generated MsgId:", msgId);
       formData.Short_Code = "SUVICO";
-    formData.UtilCode = "NACH00000000000020";
+    formData.UtilCode = "NACH00000000024906";
     // Format amounts
     const debitAmountStr = formData.Customer_DebitAmount
       ? parseFloat(formData.Customer_DebitAmount).toFixed(2)
@@ -38,7 +38,7 @@ exports.initiateMandate = async (req, res) => {
       Customer_EmailId: encryptAES(formData.Customer_EmailId),
       Customer_AccountNo: encryptAES(formData.Customer_AccountNo),
       Short_Code: encryptAES("SUVICO"),
-      UtilCode: encryptAES("NACH00000000000020"),
+      UtilCode: encryptAES("NACH00000000024906"),
       Customer_Reference1: encryptAES(formData.Customer_Reference1),
       Customer_Reference2: encryptAES(formData.Customer_Reference2),
       Customer_DebitAmount: debitAmountStr,
@@ -49,9 +49,7 @@ exports.initiateMandate = async (req, res) => {
       const mandate = await Mandate.create({
       ...payload,
       originalData: {
-        ...formData,
-        MsgId: msgId,
-        CheckSum: checksum,
+        ...formData
       },
     });
 
@@ -116,7 +114,7 @@ exports.mandateCallback = async (req, res) => {
           CheckSumVal
         }
       },
-      { upsert: true, new: true }
+      { new: true }
     );
 
     if (!savedMandate) {
