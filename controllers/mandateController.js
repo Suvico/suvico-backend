@@ -49,9 +49,7 @@ exports.initiateMandate = async (req, res) => {
       const mandate = await Mandate.create({
       ...payload,
       originalData: {
-        ...formData,
-        MsgId: msgId,
-        CheckSum: checksum,
+        ...formData
       },
     });
 
@@ -116,7 +114,7 @@ exports.mandateCallback = async (req, res) => {
           CheckSumVal
         }
       },
-      { upsert: true, new: true }
+      { new: true }
     );
 
     if (!savedMandate) {
