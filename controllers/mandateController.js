@@ -55,7 +55,7 @@ exports.initiateMandate = async (req, res) => {
 
       console.log("✅ Mandate saved:", mandate.MsgId);
     // Send auto-submit HTML
-    const hdfcUrl = "https://emandateut.hdfcbank.com/Emandate.aspx";
+    const hdfcUrl = "https://emandate.hdfcbank.com/Emandate.aspx";
     const inputs = Object.entries(payload)
       .map(([k, v]) => `<input type="hidden" name="${k}" value="${v}"/>`)
       .join("\n");
